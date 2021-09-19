@@ -2,26 +2,54 @@ package Employee.Payroll.JDBC;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class EmployeePayrollJDBC {
-	private String url = "jdbc:mysql://localhost:3306/payroll_service?useSSL=false";
-	private String username = "root";
-    private String password = "hello";
-    Connection con;
+	Connection con;
+	
+	public void getTableData() throws SQLException {
+		try{
+			JDBCConnection jdbcCon = new JDBCConnection();
+			con = jdbcCon.getDBConnection();
+			String query = "select * from employee_payroll";
+	    	Statement stmt =  con.createStatement();
+	       // PreparedStatement preparedStatement= dbConnection.prepareStatement("select * from employee_payroll");
+	        ResultSet resultSet= stmt.executeQuery(query);
+	        while (resultSet.next())
+	        {
+	            System.out.println(
+	                    resultSet.getString(1)+" "+
+	                            resultSet.getString(2)+ " "+
+	                            resultSet.getString(3)+" "+
+	                            resultSet.getString(4)
+	            );
+	        }
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
 
-    public Connection getDBConnection() throws SQLException {	       
-    	try {
-	          Class.forName("com.mysql.cj.jdbc.Driver");
-	          con = DriverManager.getConnection(url, username, password);
-	          System.out.println("connection successful");
-    	}
-    	catch (ClassNotFoundException e){
-    		e.printStackTrace();
-	    }
-	    catch(Exception e) {
-	    	e.printStackTrace();
-	    }
-	    return con;
-    }
+	}
+
+	public void updateBasePay(String name, double salary) throws SQLException {
+		try{
+			JDBCConnection jdbcCon = new JDBCConnection();
+			con = jdbcCon.getDBConnection();
+			
+			String query = "update employee_payroll set salary=? where name=?";
+			PreparedStatement pstmt = con.prepareStatement(query);
+			pstmt.setDouble(1, salary);
+			pstmt.setString(2, name);
+			pstmt.executeUpdate();
+			System.out.println("Done");			
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+
+		
+	}
 }
