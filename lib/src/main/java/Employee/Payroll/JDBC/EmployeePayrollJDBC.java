@@ -51,20 +51,52 @@ public class EmployeePayrollJDBC {
 		}		
 	}
 	
-	public void getDatabyDateRange() throws SQLException {
-		JDBCConnection jdbcCon = new JDBCConnection();
-		con = jdbcCon.getDBConnection();
-		
-		String query = "SELECT * FROM employee_payroll WHERE start BETWEEN CAST('2018-01-01' AS DATE) AND DATE(NOW())";
-		Statement stm = con.createStatement();
-		ResultSet rs = stm.executeQuery(query);
-		while(rs.next()) {			
-			System.out.println(
-					rs.getString(1)+" "+
-					rs.getString(2)+" "+
-					rs.getString(4));
+	public void getDatabyDateRange(String date) throws SQLException {
+		try{
+			JDBCConnection jdbcCon = new JDBCConnection();
+			con = jdbcCon.getDBConnection();
+			
+			String query = String.format("SELECT * FROM employee_payroll WHERE start BETWEEN CAST('2018-01-01' AS DATE) AND DATE(NOW())",date);
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(query);
+			while(rs.next()) {			
+				System.out.println(
+						rs.getString(1)+" "+
+						rs.getString(2)+" "+
+						rs.getString(5));
+			}
 		}
-		
-		
+		catch(SQLException e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	public void sumOfSalary() throws SQLException{
+		try {
+			JDBCConnection jdbcCon = new JDBCConnection();
+			con = jdbcCon.getDBConnection();
+			
+			Statement stm = con.createStatement();
+//			String query = "ALTER TABLE employee_payroll ADD gender CHAR(1) AFTER name";
+//			stm.executeUpdate(query);
+//			System.out.println("Column added");
+			
+			PreparedStatement pstmt = con.prepareStatement("update employee_payroll set gender = 'F' where name = 'Terisa'");
+			pstmt.executeUpdate();
+			
+			PreparedStatement pstmt1 = con.prepareStatement("update employee_payroll set gender = 'M' where name = 'Bill' or name = 'Charlie';");
+			pstmt1.executeUpdate();
+			
+			PreparedStatement pstmt2 = con.prepareStatement("SELECT gender,SUM(salary) FROM employee_payroll WHERE gender='M'");
+			ResultSet rs = pstmt2.executeQuery();
+			while(rs.next()) {			
+				System.out.println(
+						rs.getString(1)+" "+
+				rs.getInt(2));
+			}		
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

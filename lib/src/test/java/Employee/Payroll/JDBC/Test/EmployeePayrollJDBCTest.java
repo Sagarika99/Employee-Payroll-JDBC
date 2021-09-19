@@ -27,7 +27,14 @@ public class EmployeePayrollJDBCTest {
     @Test
     public void givenDateRange_RetrieveEmployeeName() throws SQLException {
     	Connection dbConnection= new JDBCConnection().getDBConnection();
-    	employeePayrollJDBC.getDatabyDateRange();
+    	employeePayrollJDBC.getDatabyDateRange("2018-02-01");
+    	dbConnection.close();
+    }
+    
+    @Test
+    public void addGenderColumn_AndGetSumOfSalaryByGender() throws SQLException {
+    	Connection dbConnection= new JDBCConnection().getDBConnection();
+    	employeePayrollJDBC.sumOfSalary();
     	dbConnection.close();
     }
 }
