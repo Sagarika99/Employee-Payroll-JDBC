@@ -6,6 +6,11 @@ import Employee.Payroll.JDBC.EmployeePayrollJDBC;
 
 public class EmployeePayrollJDBCTest {
 
+	@Test
+    public void getDB_Connection() throws SQLException {
+		Connection dbConnection= new EmployeePayrollJDBC().getDBConnection();
+    }
+
     @Test
     public void get_AllEmployee() throws SQLException {
     	Connection dbConnection= new EmployeePayrollJDBC().getDBConnection();
