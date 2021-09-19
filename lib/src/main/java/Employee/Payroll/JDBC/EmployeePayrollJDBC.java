@@ -48,8 +48,23 @@ public class EmployeePayrollJDBC {
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
+		}		
+	}
+	
+	public void getDatabyDateRange() throws SQLException {
+		JDBCConnection jdbcCon = new JDBCConnection();
+		con = jdbcCon.getDBConnection();
+		
+		String query = "SELECT * FROM employee_payroll WHERE start BETWEEN CAST('2018-01-01' AS DATE) AND DATE(NOW())";
+		Statement stm = con.createStatement();
+		ResultSet rs = stm.executeQuery(query);
+		while(rs.next()) {			
+			System.out.println(
+					rs.getString(1)+" "+
+					rs.getString(2)+" "+
+					rs.getString(4));
 		}
-
+		
 		
 	}
 }

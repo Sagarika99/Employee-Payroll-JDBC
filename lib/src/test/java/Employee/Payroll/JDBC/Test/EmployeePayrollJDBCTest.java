@@ -23,4 +23,11 @@ public class EmployeePayrollJDBCTest {
     	employeePayrollJDBC.updateBasePay("Terisa",3000000.00);
     	dbConnection.close();
     }
+    
+    @Test
+    public void givenDateRange_RetrieveEmployeeName() throws SQLException {
+    	Connection dbConnection= new JDBCConnection().getDBConnection();
+    	employeePayrollJDBC.getDatabyDateRange();
+    	dbConnection.close();
+    }
 }
