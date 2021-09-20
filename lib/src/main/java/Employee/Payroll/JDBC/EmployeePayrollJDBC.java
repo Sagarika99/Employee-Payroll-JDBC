@@ -63,6 +63,8 @@ public class EmployeePayrollJDBC {
 				System.out.println(
 						rs.getString(1)+" "+
 						rs.getString(2)+" "+
+						rs.getString(3)+" "+
+						rs.getString(4)+" "+
 						rs.getString(5));
 			}
 		}
@@ -98,5 +100,32 @@ public class EmployeePayrollJDBC {
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public int insertData(String name,char gender, Double salary, String date) throws SQLException {
+		JDBCConnection jdbcCon = new JDBCConnection();
+		con = jdbcCon.getDBConnection();
+		
+		try {
+			String query = String.format("insert into employee_payroll(name,gender,salary,start) values ('%s','%s',%2f,CAST('%s' AS DATE));", name, gender, salary, date);
+			Statement stm = con.createStatement();
+			int result = stm.executeUpdate(query);
+			ResultSet rs = stm.executeQuery(query);
+			while (rs.next())
+		        {
+		            System.out.println(
+		                    rs.getString(1)+" "+
+		                            rs.getString(2)+ " "+
+		                            rs.getString(3)+" "+
+		                            rs.getString(4)+" "+
+		                            rs.getString(5)
+		            );
+		        }
+			return result;
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }

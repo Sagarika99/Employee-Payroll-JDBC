@@ -37,4 +37,11 @@ public class EmployeePayrollJDBCTest {
     	employeePayrollJDBC.sumOfSalary();
     	dbConnection.close();
     }
+    
+    @Test
+    public void insertDataIntoTable() throws SQLException{
+    	Connection dbConnection= new JDBCConnection().getDBConnection();
+    	employeePayrollJDBC.insertData("John", 'M', 4000000.00, "2019-05-24");
+    	dbConnection.close();
+    }
 }
